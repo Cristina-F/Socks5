@@ -16,14 +16,12 @@ class Parser {
             }
             else {
                 int numMethods = message.get(1);
-                boolean found = false;
                 for (int i = 2; i < numMethods + 2; ++i){
                     if (msg[i] == AUTH){
-                        found = true;
-                        break;
+                        return true;
                     }
                 }
-                return found;
+                return false;
             }
         }
         else if (state == StateInfo.State.NO_CONNECTED){

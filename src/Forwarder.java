@@ -9,7 +9,7 @@ import java.util.*;
 
 class Forwarder {
     private int listenPort;
-
+    private final int BUF_SIZE = 8192;
     private Selector selector;
     private Map<SocketChannel, SocketChannel> connections = new HashMap<>();
     private Map<SocketChannel, StateInfo> stateOfChannels = new HashMap<>();
@@ -66,7 +66,6 @@ class Forwarder {
     }
 
     private void read(SelectionKey key, DatagramChannel udpSocket) throws IOException {
-        int BUF_SIZE = 8192;
         ByteBuffer byteBuffer = ByteBuffer.allocate(BUF_SIZE);
         boolean isDNS = !(key.channel() instanceof SocketChannel);
         if (!isDNS) {
@@ -138,7 +137,7 @@ class Forwarder {
             }
         }
         else {
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            ByteBuffer buffer = ByteBuffer.allocate(BUF_SIZE);
             int readRes = udpSocket.read(buffer);
             if (readRes <= 0) return;
             Message msg = new Message(buffer.array());
